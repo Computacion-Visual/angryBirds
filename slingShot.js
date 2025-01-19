@@ -36,7 +36,9 @@ class SlingShot {
     ) {
       this.sling.bodyB.collisionFilter.category = 1;
       this.sling.bodyB = null;
+      attempts++;
     }
+    
   }
   attach(bird) {
     this.sling.bodyB = bird.body;

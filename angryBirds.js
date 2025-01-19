@@ -21,7 +21,8 @@ let engine,
   gameStarted = false,
   aspectRatio,
   newHeight, 
-  fondo;
+  fondo,
+  attempts=0;
 
 function preload() {
   redBirdImg = loadImage("assets/img/redBird.png");
@@ -116,30 +117,34 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key === " ") {
-    World.remove(world, bird.body);
-    bird = new Bird(150, 350, 20, "red");
-    slingShot.attach(bird);
+
+  if (attempts < 3) {
+    if (key === " ") {
+      World.remove(world, bird.body);
+      bird = new Bird(150, 350, 20, "red");
+      slingShot.attach(bird);      
+    }
+  
+    if (key === "q" || key === "Q") {
+      World.remove(world, bird.body);
+      bird = new Bird(150, 350, 20, "red");
+      slingShot.attach(bird);
+    }
+  
+    if (key === "w" || key === "W") {
+      World.remove(world, bird.body);
+      bird = new Bird(150, 350, 20, "chuck");
+      slingShot.attach(bird);
+    }
+  
+    if (key === "e" || key === "E") {
+      World.remove(world, bird.body);
+      bird = new Bird(150, 350, 20, "bomb");
+      slingShot.attach(bird);
+    }
   }
 
-  if (key === "q") {
-    World.remove(world, bird.body);
-    bird = new Bird(150, 350, 20, "red");
-    slingShot.attach(bird);
   }
-
-  if (key === "w") {
-    World.remove(world, bird.body);
-    bird = new Bird(150, 350, 20, "chuck");
-    slingShot.attach(bird);
-  }
-
-  if (key === "e") {
-    World.remove(world, bird.body);
-    bird = new Bird(150, 350, 20, "bomb");
-    slingShot.attach(bird);
-  }
-}
 
 function checkVictory() {
   return pigs.every(pig => pig.isDestroyed);
@@ -317,4 +322,5 @@ function resetGame() {
 
   bird = new Bird(150, 350, 20, "red");
   slingShot = new SlingShot(bird, slingShotImg);
+  attempts = 0;
 }
