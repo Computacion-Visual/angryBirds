@@ -68,16 +68,13 @@ function setup() {
   World.add(world, mc);
 
   ground = new Ground(width / 2, height - 10, width, 20, grassImg);
-  for (let j = 0; j < 4; j++) {
-    for (let i = 0; i < 10; i++) {
-      const box = new Box(400 + 50 * j, height - 40 * i, 40, 40, "wood");
-      boxes.push(box);
-    }
-  }
+    
+  // Crear la pirámide
+  createPyramid();
+
+
   bird = new Bird(150, 350, 20, "red");
   slingShot = new SlingShot(bird, slingShotImg);
-  pig = new Pig(300, 450, 20, "minion");
-  pigs.push(pig);
 }
 
 function draw() {
@@ -98,18 +95,16 @@ function draw() {
   Engine.update(engine);
   slingShot.fly(mc);
   ground.show();
-  for (let i = 0; i < 4 * 10; i++) {
+  for (let i = 0; i < boxes.length; i++) {
     boxes[i].update();
     boxes[i].show();
   }
   slingShot.show();
   bird.show();
-  pig.show();
-  pig.update();
-  
+  /*
   if (checkVictory()) {
     showVictoryScreen();
-  }
+  }*/
 }
 }
 
@@ -176,4 +171,66 @@ function startGame() {
 
 function goHome() {
   gameStarted = false; // Volver a la pantalla inicial
+}
+
+
+function createPyramid() {
+  const baseX = 500; // La X inicial de la base
+  const baseY = height - 40; // La Y en la base (en la parte inferior de la pantalla)
+
+  // Fila 1 (Base) - 7 cajas
+  for (let i = 0; i < 7; i++) {
+    boxes.push(new Box(baseX + i * 40, baseY, 40, 40, "wood"));
+  }
+
+  // Fila 2 - Caja, Cerdo, Caja, Cerdo, Caja, Cerdo, Caja
+  let yOffset = baseY - 40; // Desplazamiento en Y para la siguiente fila
+  for (let i = 0; i < 7; i++) {
+    const x = baseX + i * 40;
+    if (i % 2 === 0) {
+      boxes.push(new Box(x, yOffset, 40, 40, "ice"));
+    } else {
+      boxes.push(new Pig(x, yOffset, 20, "minion"));
+    }
+  }
+
+  // Fila 3 - 7 cajas
+  yOffset -= 40;
+  for (let i = 0; i < 7; i++) {
+    boxes.push(new Box(baseX + i * 40, yOffset, 40, 40, "wood"));
+  }
+
+  // Fila 4 - Caja, Cerdo, Caja, Cerdo, Caja
+  yOffset -= 40;
+  for (let i = 0; i < 5; i++) {
+    const x = baseX + (i+1) * 40;
+    if (i % 2 === 0) {
+      boxes.push(new Box(x, yOffset, 40, 40, "ice"));
+    } else {
+      boxes.push(new Pig(x, yOffset, 20, "corporal"));
+    }
+  }
+
+  // Fila 5 - 5 cajas
+  yOffset -= 40;
+  for (let i = 0; i < 5; i++) {
+    boxes.push(new Box(baseX + (i+1) * 40, yOffset, 40, 40, "wood"));
+  }
+
+  // Fila 6 - Caja, Cerdo, Caja
+  yOffset -= 40;
+  for (let i = 0; i < 3; i++) {
+    const x = baseX + (i+2) * 40;
+    if (i % 2 === 0) {
+      boxes.push(new Box(x, yOffset, 40, 40, "steel"));
+    } else {
+      boxes.push(new Pig(x, yOffset, 20, "king"));
+    }
+  }
+
+  // Fila 7 (Punta) - 3 cajas
+  yOffset -= 40;
+  for (let i = 0; i < 3; i++) {
+    boxes.push(new Box(baseX + (i+2) * 40, yOffset, 40, 40, "steel"));
+  }
 }
