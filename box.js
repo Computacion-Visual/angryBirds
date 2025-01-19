@@ -29,7 +29,6 @@ class Box {
 
     const materialProps = materials[material] || materials.wood;
     options = {
-      ...options,
       density: materialProps.density,
       restitution: materialProps.restitution,
       friction: materialProps.friction,
@@ -52,7 +51,10 @@ class Box {
   }
 
   show() {
-    if (this.isDestroyed) return;
+    if (this.isDestroyed)
+    {
+      return;
+  }
 
     push();
     translate(this.body.position.x, this.body.position.y);

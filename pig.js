@@ -59,7 +59,10 @@ class Pig {
   }
 
   show() {
-
+    if (this.isDestroyed)
+    {
+      return;
+    }
     push();
     translate(this.body.position.x, this.body.position.y);
     rotate(this.body.angle);

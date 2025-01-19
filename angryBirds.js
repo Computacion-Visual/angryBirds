@@ -76,7 +76,7 @@ function setup() {
   }
   bird = new Bird(150, 350, 20, "red");
   slingShot = new SlingShot(bird, slingShotImg);
-  pig = new Pig(300, 450, 20, "minion");
+  pig = new Pig(700, 450, 20, "minion");
   pigs.push(pig);
 }
 
@@ -157,18 +157,63 @@ function showVictoryScreen() {
 function mousePressed() {
   if (!gameStarted) {
     // Verificar si el clic está sobre el botón "Jugar"
-    if (mouseX > playButtonX && mouseX < playButtonX + 300 &&  // Ancho de la imagen redimensionada (300 px)
-        mouseY > playButtonY && mouseY < playButtonY + playButton.height * (300 / playButton.width)) {  // Alto proporcional
-      startGame();  // Iniciar el juego
+    if (
+      mouseX > playButtonX &&
+      mouseX < playButtonX + 300 &&
+      mouseY > playButtonY &&
+      mouseY < playButtonY + playButton.height * (300 / playButton.width)
+    ) {
+      startGame(); // Iniciar el juego
     }
   } else {
     // Verificar si el clic está sobre el botón "Volver"
-    if (mouseX > homeButtonX && mouseX < homeButtonX + 55 &&  // Ancho de homeButton (55 px)
-      mouseY > homeButtonY && mouseY < homeButtonY + 55) {  // Alto de homeButton (55 px)
-    goHome();  // Volver a la pantalla inicial
-  }
+    if (
+      mouseX > homeButtonX &&
+      mouseX < homeButtonX + 55 &&
+      mouseY > homeButtonY &&
+      mouseY < homeButtonY + 55
+    ) {
+      goHome(); // Volver a la pantalla inicial
+      return;
+    }
+
+    // Restringir interacciones al slingshot
+    const distToBird = dist(mouseX, mouseY, bird.body.position.x, bird.body.position.y);
+    if (distToBird > 50) {
+      return; // Ignorar clics fuera del rango del slingshot
+    }
+
+    // Ignorar clics en pigs y cajas
+    for (const pig of pigs) {
+      const pigPos = pig.body.position;
+      const pigSize = 50; // Suponiendo un tamaño aproximado
+      if (
+        mouseX > pigPos.x - pigSize &&
+        mouseX < pigPos.x + pigSize &&
+        mouseY > pigPos.y - pigSize &&
+        mouseY < pigPos.y + pigSize
+      ) {
+        return; // Ignorar clics sobre un pig
+      }
+    }
+
+    for (const box of boxes) {
+      const boxPos = box.body.position;
+      const boxWidth = box.w;
+      const boxHeight = box.h;
+      if (
+        mouseX > boxPos.x - boxWidth / 2 &&
+        mouseX < boxPos.x + boxWidth / 2 &&
+        mouseY > boxPos.y - boxHeight / 2 &&
+        mouseY < boxPos.y + boxHeight / 2
+      ) {
+        return; // Ignorar clics sobre una caja
+      }
+    }
   }
 }
+
+
 
 function startGame() {
   gameStarted = true; // Cambiar a la pantalla del juego
