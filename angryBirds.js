@@ -35,8 +35,9 @@ function preload() {
   corporalPigImg = loadImage("assets/img/corporalPig.png");
   slingShotImg = loadImage("assets/img/slingshot.png");
   smokeImg = loadImage("assets/img/smoke.png");
-  playButton = loadImage("assets/img/play.png")
-  homeButton = loadImage("assets/img/home-btn.png")
+  playButton = loadImage("assets/img/play.png");
+  homeButton = loadImage("assets/img/home-btn.png");
+  backgroundImg = loadImage("assets/img/background.jpg");
 }
 
 function setup() {
@@ -90,7 +91,8 @@ function draw() {
     image(playButton, playButtonX, playButtonY,300,newHeight);
   } else {
   background(0, 181, 226);
-  frameRate(60);
+    image(backgroundImg, 0, 0, width, height); // Mostrar fondo
+    frameRate(60);
 
   // Mostrar el botón "Volver"
   image(homeButton, homeButtonX, homeButtonY);
