@@ -78,9 +78,6 @@ function setup() {
 
   bird = new Bird(150, 350, 20, "red");
   slingShot = new SlingShot(bird, slingShotImg);
-  pig = new Pig(700, 450, 20, "minion");
-  pigs.push(pig);
-
 }
 
 function draw() {
@@ -107,12 +104,15 @@ function draw() {
     boxes[i].update();
     boxes[i].show();
   }
+  for (let i = 0; i < pigs.length; i++) {
+    pigs[i].update();
+    pigs[i].show();
+  }
   slingShot.show();
   bird.show();
-  /*
   if (checkVictory()) {
     showVictoryScreen();
-  }*/
+  }
 }
 }
 
@@ -248,7 +248,7 @@ function createPyramid() {
     if (i % 2 === 0) {
       boxes.push(new Box(x, yOffset, 40, 40, "ice"));
     } else {
-      boxes.push(new Pig(x, yOffset, 20, "minion"));
+      pigs.push(new Pig(x, yOffset, 20, "minion"));
     }
   }
 
@@ -265,7 +265,7 @@ function createPyramid() {
     if (i % 2 === 0) {
       boxes.push(new Box(x, yOffset, 40, 40, "ice"));
     } else {
-      boxes.push(new Pig(x, yOffset, 20, "corporal"));
+      pigs.push(new Pig(x, yOffset, 20, "corporal"));
     }
   }
 
@@ -282,7 +282,7 @@ function createPyramid() {
     if (i % 2 === 0) {
       boxes.push(new Box(x, yOffset, 40, 40, "steel"));
     } else {
-      boxes.push(new Pig(x, yOffset, 20, "king"));
+      pigs.push(new Pig(x, yOffset, 20, "king"));
     }
   }
 
@@ -296,6 +296,7 @@ function createPyramid() {
 function resetGame() {
   // Limpiar las cajas y los cerdos del array
   boxes = []; // Esto vacía el array de boxes y cerdos
+  pigs = [];
   // Limpiar todos los objetos del mundo de física
   World.clear(world); // Borra todos los cuerpos del mundo
 
