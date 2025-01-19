@@ -22,7 +22,8 @@ let engine,
   aspectRatio,
   newHeight, 
   fondo,
-  attempts=0;
+  attempts=0,
+  fuente;
 
 function preload() {
   redBirdImg = loadImage("assets/img/redBird.png");
@@ -40,6 +41,7 @@ function preload() {
   playButton = loadImage("assets/img/play.png");
   homeButton = loadImage("assets/img/home-btn.png");
   fondo = loadImage("assets/img/Fondo.jpg");
+  fuente = loadFont("assets/Fonts/angrybirds-regular.ttf");
 }
 
 function setup() {
@@ -89,6 +91,15 @@ function draw() {
     ground.show();
     // Mostrar el botón "Jugar"
     image(playButton, playButtonX, playButtonY,300,newHeight);
+    textFont(fuente);
+    textSize(32);
+    fill(0);  // Texto en color negro
+    textAlign(CENTER, TOP);
+  
+    // Título
+    textSize(48);
+    text("Usa Q,W,E para cambiar de pájaro", width / 2, 50);
+    text("Solo puedes hacer 3 lanzamientos", width / 2, 100);
   } else {
   background(0, 181, 226);
   image(fondo, 0, 0,1000,480);
@@ -152,12 +163,11 @@ function checkVictory() {
 
 function showVictoryScreen() {
   push();
-  fill(255);
+  fill(0);
   textAlign(CENTER, CENTER);
   textSize(48);
-  text("¡Victoria!", width / 2, height / 2);
+  text("¡Victoria!", width / 2, height / 4);
   pop();
-  noLoop(); // Detiene el bucle de dibujo
 }
 
 // Detectar si el ratón ha hecho clic en el botón "Jugar"
