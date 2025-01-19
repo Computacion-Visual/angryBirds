@@ -11,7 +11,16 @@ let engine,
   redImg,
   crateImg,
   grassImg,
-  pigs = [];
+  pigs = [],
+  playButton,
+  homeButton,
+  playButtonX, 
+  playButtonY,
+  homeButtonX,
+  homeButtonY,
+  gameStarted = false,
+  aspectRatio,
+  newHeight;
 
 function preload() {
   redBirdImg = loadImage("assets/img/redBird.png");
@@ -26,10 +35,22 @@ function preload() {
   corporalPigImg = loadImage("assets/img/corporalPig.png");
   slingShotImg = loadImage("assets/img/slingshot.png");
   smokeImg = loadImage("assets/img/smoke.png");
+  playButton = loadImage("assets/img/play.png")
+  homeButton = loadImage("assets/img/home-btn.png")
 }
 
 function setup() {
-  const canvas = createCanvas(640, 480);
+  const canvas = createCanvas(1000, 480);
+
+  // Posiciones de los botones
+  aspectRatio = playButton.width / playButton.height;
+  newHeight = 300 / aspectRatio;
+
+  playButtonX = width / 2 - 300 / 2;
+  playButtonY = height / 2 - newHeight / 2;
+  
+  homeButtonX = 10;  // Esquina superior izquierda
+  homeButtonY = 10;
 
   engine = Engine.create();
   world = engine.world;
@@ -61,8 +82,19 @@ function setup() {
 }
 
 function draw() {
+
+  if (!gameStarted) {
+    // Pantalla inicial
+    background(0, 181, 226);
+    ground.show();
+    // Mostrar el botón "Jugar"
+    image(playButton, playButtonX, playButtonY,300,newHeight);
+  } else {
   background(0, 181, 226);
   frameRate(60);
+
+  // Mostrar el botón "Volver"
+  image(homeButton, homeButtonX, homeButtonY);
 
   Engine.update(engine);
   slingShot.fly(mc);
@@ -79,6 +111,7 @@ function draw() {
   if (checkVictory()) {
     showVictoryScreen();
   }
+}
 }
 
 function keyPressed() {
@@ -119,4 +152,29 @@ function showVictoryScreen() {
   text("¡Victoria!", width / 2, height / 2);
   pop();
   noLoop(); // Detiene el bucle de dibujo
+}
+
+// Detectar si el ratón ha hecho clic en el botón "Jugar"
+function mousePressed() {
+  if (!gameStarted) {
+    // Verificar si el clic está sobre el botón "Jugar"
+    if (mouseX > playButtonX && mouseX < playButtonX + 300 &&  // Ancho de la imagen redimensionada (300 px)
+        mouseY > playButtonY && mouseY < playButtonY + playButton.height * (300 / playButton.width)) {  // Alto proporcional
+      startGame();  // Iniciar el juego
+    }
+  } else {
+    // Verificar si el clic está sobre el botón "Volver"
+    if (mouseX > homeButtonX && mouseX < homeButtonX + 55 &&  // Ancho de homeButton (55 px)
+      mouseY > homeButtonY && mouseY < homeButtonY + 55) {  // Alto de homeButton (55 px)
+    goHome();  // Volver a la pantalla inicial
+  }
+  }
+}
+
+function startGame() {
+  gameStarted = true; // Cambiar a la pantalla del juego
+}
+
+function goHome() {
+  gameStarted = false; // Volver a la pantalla inicial
 }
