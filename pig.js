@@ -40,7 +40,7 @@ class Pig {
         category: 2,
       },
     };
-
+    
     this.body = Bodies.circle(x, y, r, options);
     Body.setMass(this.body, pigProps.mass);
 
@@ -54,6 +54,11 @@ class Pig {
     this.isHit = false;
     this.hitIntensity = 0;
     this.fadeStart = 60;
+
+    this.body.collisionFilter = {
+      category: 0x0001, // Puedes cambiar esto si usas categorías de colisión
+      mask: 0x0001, // Evita que interactúe con el MouseConstraint
+    };
 
     World.add(world, this.body);
   }

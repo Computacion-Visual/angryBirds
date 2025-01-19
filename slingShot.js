@@ -15,19 +15,17 @@ class SlingShot {
   }
 
   show() {
-    if (this.sling.bodyB) {
-      line(
-        this.sling.pointA.x,
-        this.sling.pointA.y + 20,
-        this.sling.bodyB.position.x,
-        this.sling.bodyB.position.y,
-      );
-
-      push();
-      translate(this.sling.pointA.x - 20, this.sling.pointA.y);
-      image(this.img, 0, 0, 40, 116);
-      pop();
-    }
+    line(
+      this.sling.pointA.x,
+      this.sling.pointA.y + 20,
+      this.sling.bodyB ? this.sling.bodyB.position.x : this.sling.pointA.x,
+      this.sling.bodyB ? this.sling.bodyB.position.y : this.sling.pointA.y
+    );
+  
+    push();
+    translate(this.sling.pointA.x - 20, this.sling.pointA.y);
+    image(this.img, 0, 0, 40, 116);
+    pop();
   }
 
   fly(mc) {

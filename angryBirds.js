@@ -20,7 +20,8 @@ let engine,
   homeButtonY,
   gameStarted = false,
   aspectRatio,
-  newHeight;
+  newHeight, 
+  fondo;
 
 function preload() {
   redBirdImg = loadImage("assets/img/redBird.png");
@@ -37,7 +38,7 @@ function preload() {
   smokeImg = loadImage("assets/img/smoke.png");
   playButton = loadImage("assets/img/play.png");
   homeButton = loadImage("assets/img/home-btn.png");
-  backgroundImg = loadImage("assets/img/background.jpg");
+  fondo = loadImage("assets/img/Fondo.jpg");
 }
 
 function setup() {
@@ -86,13 +87,14 @@ function draw() {
   if (!gameStarted) {
     // Pantalla inicial
     background(0, 181, 226);
+    image(fondo, 0, 0,1000,480);
     ground.show();
     // Mostrar el botón "Jugar"
     image(playButton, playButtonX, playButtonY,300,newHeight);
   } else {
   background(0, 181, 226);
-    image(backgroundImg, 0, 0, width, height); // Mostrar fondo
-    frameRate(60);
+  image(fondo, 0, 0,1000,480);
+  frameRate(60);
 
   // Mostrar el botón "Volver"
   image(homeButton, homeButtonX, homeButtonY);
@@ -221,6 +223,7 @@ function startGame() {
 
 function goHome() {
   gameStarted = false; // Volver a la pantalla inicial
+  resetGame(); // Reiniciar el juego
 }
 
 
@@ -283,4 +286,35 @@ function createPyramid() {
   for (let i = 0; i < 3; i++) {
     boxes.push(new Box(baseX + (i+2) * 40, yOffset, 40, 40, "steel"));
   }
+}
+
+function resetGame() {
+  // Limpiar las cajas y los cerdos del array
+  boxes = []; // Esto vacía el array de boxes y cerdos
+  // Limpiar todos los objetos del mundo de física
+  World.clear(world); // Borra todos los cuerpos del mundo
+
+  engine = Engine.create();
+  world = engine.world;
+
+  const mouse = Mouse.create(canvas.elt);
+  mouse.pixelRatio = pixelDensity();
+
+  mc = MouseConstraint.create(engine, {
+    mouse: mouse,
+    collisionFilter: {
+      mask: 2,
+    },
+  });
+
+  World.add(world, mc);
+
+  ground = new Ground(width / 2, height - 10, width, 20, grassImg);
+    
+  // Crear la pirámide
+  createPyramid();
+
+
+  bird = new Bird(150, 350, 20, "red");
+  slingShot = new SlingShot(bird, slingShotImg);
 }
