@@ -33,7 +33,6 @@ class Pig {
     const pigProps = pigTypes[type] || pigTypes.minion;
 
     options = {
-      ...options,
       density: pigProps.density,
       restitution: pigProps.restitution,
       friction: pigProps.friction,
@@ -60,7 +59,6 @@ class Pig {
   }
 
   show() {
-    if (this.isDestroyed) return;
 
     push();
     translate(this.body.position.x, this.body.position.y);

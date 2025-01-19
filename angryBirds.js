@@ -77,8 +77,7 @@ function setup() {
   bird = new Bird(150, 350, 20, "red");
   slingShot = new SlingShot(bird, slingShotImg);
   pig = new Pig(300, 450, 20, "minion");
-  pigs.push(new Pig(350, 450, 20, "corporal"));
-  pigs.push(new Pig(400, 450, 20, "king"));
+  pigs.push(pig);
 }
 
 function draw() {
