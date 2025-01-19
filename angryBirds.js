@@ -10,7 +10,8 @@ let engine,
   mc,
   redImg,
   crateImg,
-  grassImg;
+  grassImg,
+  pigs = [];
 
 function preload() {
   redBirdImg = loadImage("assets/img/redBird.png");
@@ -55,6 +56,8 @@ function setup() {
   bird = new Bird(150, 350, 20, "red");
   slingShot = new SlingShot(bird, slingShotImg);
   pig = new Pig(300, 450, 20, "minion");
+  pigs.push(new Pig(350, 450, 20, "corporal"));
+  pigs.push(new Pig(400, 450, 20, "king"));
 }
 
 function draw() {
@@ -72,6 +75,10 @@ function draw() {
   bird.show();
   pig.show();
   pig.update();
+  
+  if (checkVictory()) {
+    showVictoryScreen();
+  }
 }
 
 function keyPressed() {
@@ -98,4 +105,18 @@ function keyPressed() {
     bird = new Bird(150, 350, 20, "bomb");
     slingShot.attach(bird);
   }
+}
+
+function checkVictory() {
+  return pigs.every(pig => pig.isDestroyed);
+}
+
+function showVictoryScreen() {
+  push();
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(48);
+  text("¡Victoria!", width / 2, height / 2);
+  pop();
+  noLoop(); // Detiene el bucle de dibujo
 }
