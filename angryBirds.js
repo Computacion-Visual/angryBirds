@@ -1,27 +1,23 @@
-const {Engine, 
-  World, 
-  Bodies, 
-  Body, 
-  Constraint, 
-  MouseConstraint,
-  Mouse
-} = Matter;
+const { Engine, World, Bodies, Body, Constraint, MouseConstraint, Mouse } =
+  Matter;
 
-let engine, 
-world, 
-ground, 
-bird, 
-slingShot, 
-boxes = [], 
-mc, 
-redImg,
-crateImg,
-grassImg;
+let engine,
+  world,
+  ground,
+  bird,
+  slingShot,
+  boxes = [],
+  mc,
+  redImg,
+  crateImg,
+  grassImg;
 
-function preload(){
-  redImg = loadImage("assets/img/RedBird.png")
-  crateImg = loadImage("assets/img/crate.png")
-  grassImg = loadImage("assets/img/grass.jpg")
+function preload() {
+  redImg = loadImage("assets/img/RedBird.png");
+  crateImg = loadImage("assets/img/crate.png");
+  grassImg = loadImage("assets/img/grass.jpg");
+  pigImg = loadImage("assets/img/pig.png");
+  slingShotImg = loadImage("assets/img/slingshot.png");
 }
 
 function setup() {
@@ -33,29 +29,25 @@ function setup() {
   const mouse = Mouse.create(canvas.elt);
   mouse.pixelRatio = pixelDensity();
 
-  mc = MouseConstraint.create(
-    engine, {
-      mouse: mouse,
-      collisionFilter:{
-        mask: 2
-      }
+  mc = MouseConstraint.create(engine, {
+    mouse: mouse,
+    collisionFilter: {
+      mask: 2,
+    },
   });
-  
+
   World.add(world, mc);
 
-
-  ground = new Ground(width/2, height-10, width, 20, grassImg);
-  for (let j = 0; j<4; j++){
-    for (let i=0; i<10; i++){
-      const box = new Box(
-        400 + 50*j, height - 40*i, 40, 40, crateImg
-      );
+  ground = new Ground(width / 2, height - 10, width, 20, grassImg);
+  for (let j = 0; j < 4; j++) {
+    for (let i = 0; i < 10; i++) {
+      const box = new Box(400 + 50 * j, height - 40 * i, 40, 40, crateImg);
       boxes.push(box);
     }
   }
   bird = new Bird(150, 350, 20, 2, redImg);
-  slingShot = new SlingShot(bird);
-
+  slingShot = new SlingShot(bird, slingShotImg);
+  pig = new Pig(200, 350, 20, 2, pigImg);
 }
 
 function draw() {
@@ -64,19 +56,18 @@ function draw() {
   Engine.update(engine);
   slingShot.fly(mc);
   ground.show();
-  for(const box of boxes) {
+  for (const box of boxes) {
     box.show();
   }
   slingShot.show();
   bird.show();
+  pig.show();
 }
 
-function keyPressed(){
-  if (key == ' ') {
+function keyPressed() {
+  if (key == " ") {
     World.remove(world, bird.body);
     bird = new Bird(150, 350, 20, 2, redImg);
     slingShot.attach(bird);
   }
-
-
 }
